@@ -1,0 +1,67 @@
+<div class="calendar" fxLayout="column">
+  <div class="controls" fxFlex="64px" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="left">
+      <div class="date-navigation">
+        <button mat-raised-button class="today" (click)="today()">Today</button>
+        <div class="arrows">
+          <button class="previous" mat-icon-button aria-label="previous" (click)="previousDate()">
+            <mat-icon>navigate_before</mat-icon>
+          </button>
+          <button class="next" mat-icon-button aria-label="next" (click)="nextDate()">
+            <mat-icon>navigate_next</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="title">
+        {{ this.date | moment: 'MMMM YYYY' }}
+      </div>
+    </div>
+    <div class="right">
+      <button class="layout-selection" mat-raised-button [matMenuTriggerFor]="menu">Month <mat-icon>arrow_drop_down</mat-icon></button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Day</button>
+        <button mat-menu-item>Week</button>
+        <button mat-menu-item>Month</button>
+        <button mat-menu-item>Year</button>
+        <button mat-menu-item>Schedule</button>
+      </mat-menu>
+    </div>
+  </div>
+  <div class="layout" fxFlex>
+    <div class="month" fxFlex fxLayout="column" fxLayoutAlign="space-between">
+      <div
+        *ngFor="let week of [].constructor(this.dates.length / 7); let weekIndex = index; let weekLast = last"
+        class="week"
+        fxFlex
+        fxLayout="row"
+        fxLayoutAlign="space-between"
+        [ngClass]="{ last: weekLast }"
+      >
+        <div
+          *ngFor="let day of [].constructor(7); let dayIndex = index; let dayLast = last"
+          fxFlex
+          fxLayout="column"
+          class="day"
+          [ngClass]="{ today: isToday(this.dates[dayIndex + weekIndex * 7]), last: dayLast }"
+          [attr.data-index]="dayIndex + weekIndex * 7"
+        >
+          <div *ngIf="weekIndex === 0" class="name" fxFlex="20px">
+            {{ this.dates[dayIndex] | moment: 'ddd' }}
+          </div>
+          <div class="date" fxFlex="30px" [ngClass]="{ 'outside-current-month': !isDayInMonth(this.dates[dayIndex + weekIndex * 7]) }">
+            {{ this.dates[dayIndex + weekIndex * 7] | monthDayDate }}
+          </div>
+          <div class="events" fxFlex>
+            <ng-container *ngFor="let event of monthEvents.get(this.dates[dayIndex + weekIndex * 7] | moment: 'YYYY-MM-DD'); let eventIndex = index">
+              <div class="event" [style.marginTop.px]="eventIndex * 24">
+                <div class="dot"></div>
+                <span *ngIf="event.start.dateTime" class="time">{{ event.start.dateTime | moment: 'LT' }}</span>
+                <span class="title">{{ event.summary }}</span>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+{
+  "name": "ngx-material-calendar",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^10.0.2",
+    "@angular/core": "^10.0.2",
+    "@angular/material": "^10.0.1"
+  },
+  "dependencies": {
+    "@angular/cdk": "^10.0.1",
+    "@angular/flex-layout": "^10.0.0-beta.32",
+    "moment": "^2.27.0",
+    "tslib": "^2.0.0"
+  }
+}
