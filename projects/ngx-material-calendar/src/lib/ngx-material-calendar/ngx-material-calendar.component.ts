@@ -55,6 +55,10 @@ export class NgxMaterialCalendarComponent implements OnInit, OnChanges {
     return dateString === currentDateString;
   }
 
+  isStartOfMonth(date: Date): boolean {
+    return moment(date).format('D') === '1';
+  }
+
   isDayInMonth(date: Date): boolean {
     const startOfMonth = moment(this.date).startOf('month');
     const endofMonth = moment(this.date).endOf('month');
@@ -211,5 +215,11 @@ export class NgxMaterialCalendarComponent implements OnInit, OnChanges {
     });
 
     console.log(this.monthEvents);
+
+    
+    this.monthEvents = new Map();
+    for (const event of this.events) {
+      setEvents(event);
+    }
   }
 }
